@@ -22,6 +22,6 @@ app.post('/adicionar', (req, res) =>{
 
 
 app.listen(port, () =>{
-    console.log(`Servidor esta rodando em https://localhost:${port}`);
+    console.log(`Servidor esta rodando em http://localhost:${port}`);
 })
 
