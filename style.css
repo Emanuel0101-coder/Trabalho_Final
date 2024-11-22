@@ -25,3 +25,12 @@ input{
     box-sizing: border-box;
 }
   
+.tela1{
+    width: 30%;
+    float: left;
+}
+
+.tela2{
+    width: 30%;
+    float: left;
+}
