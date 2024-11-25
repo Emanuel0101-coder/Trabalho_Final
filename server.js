@@ -20,7 +20,6 @@ app.post('/adicionar', (req, res) =>{
     res.redirect('/');
 })
 
-
 app.listen(port, () =>{
     console.log(`Servidor esta rodando em http://localhost:${port}`);
 })

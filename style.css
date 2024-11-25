@@ -4,17 +4,32 @@ body {
     margin: 0;
   }
   
-h1 {
-    text-align: center;
+header h1 {
     margin: 0;
     padding: 20px 0;
     width: 100%;
+    text-align: 100%;
 }
   
 #produtos {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
+}
+
+.carrossel {
+    position: relative;
+    max-width: 600px;
+    margin: 20px auto;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+}
+
+.carrossel-slide {
+    width: 100%;
+    display: block;
+    object-fit: cover;
 }
 
 /* Para alguem quiser mudar alguma coisa no botao de adicionar, fique a vontade*/
@@ -35,7 +50,28 @@ button:hover{
 form {
     margin-top: 20px;
 }
+
+button.prev, button.next{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 10;
+}
   
+button.prev{
+    left: 10px;
+}
+
+button.next{
+    right: 10px;
+}
+
 input{
     display: block;
     margin-bottom: 10px;
@@ -45,13 +81,27 @@ input{
 }
   
 .tela1{
-    width: 30%;             /* vai ocupar 30% da tela */
-    float: left;
+    width: 100%;             /* vai ocupar 30% da tela */
+    max-width: 400px;
     margin-top: 20px;
     display: none;          /*inicialmente escondido*/
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: green;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
 }
 
 .tela2{
-    width: 70%;            /* Vai ocupar 70% da tela */
-    float: left;
+    width: 100%;
+    max-width: 70%;            /* Vai ocupar 70% da tela */
+    margin-top: 20px;
+}
+
+@media(max-width: 768px){
+    .tela1{
+        width: 100%;
+    }
+    .carrossel{
+        width: 90%;
+    }
 }
