@@ -3,40 +3,36 @@ const botaoMostrarTela1 = document.getElementById("mostrarTela1");
 const tela1 = document.querySelector(".tela1");
 
 //Adicionar o evento do botão
-botaoMostrarTela1.addEventListener("click", function(){
+/* botaoMostrarTela1.addEventListener("click", function(){
     tela1.style.display = "block";                  //torna a tela 1 visivel
     botaoMostrarTela1.style.display = "none";       //esconde o botão 
-})
+}) */
 
 //Carrossel
-let indiceAtual = 0; //Índice de slide atual
-const slides = document.querySelectorAll('.carrossel-slide'); //pega por id e seleciona tudo
-const totalSlides = slides.length;      //Total de slides
+const prevButton = document.querySelector('.prev');
+const nextButton = document.querySelector('.next');
+const container = document.querySelector('.carrossel-container');
+const slides = document.querySelectorAll('.carrossel-slide'); // Corrigido para pegar as imagens
 
-//Exibe a slide atual
-function exibirSlide(indice) {
-    if (indice >= totalSlides) {
-        indice = 0;
-    } else if (indice < 0){
-        indice = totalSlides - 1;
-    }
-    indiceAtual = indice;
-    const offset = indiceAtual * 100;
-    document.querySelector('.carrossel-container').style.transform = `translateX(${offset}%)`;      
+let currentIndex = 0;
+
+// Atualiza o carrossel
+function updateCarousel(){
+    const width = container.clientWidth; // Corrigido para acessar o clientWidth do container
+    container.style.transform = `translateX(${-width * currentIndex}px)`;
 }
 
-//avança para o proximo slide
-function proximaSlide() {
-    indiceAtual ++;                 //vai aumentar o indice
-    exibirSlide(indiceAtual);
-}
+// Ir para o slide anterior
+prevButton.addEventListener('click', () => {
+    currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+    updateCarousel();
+});
 
-//volta para o slide anterior
-function slideAnterior() {
-    indiceAtual --;                 //vai diminuir o indice
-    exibirSlide(indiceAtual);
-}
+// Ir para o slide seguinte
+nextButton.addEventListener('click', () => {
+    currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+    updateCarousel();
+});
 
-//Eventos do Carrossel
-document.querySelector('.next').addEventListener('click', proximaSlide);
-document.querySelector('.prev').addEventListener('click',slideAnterior);
+// Inicializa o carrossel na primeira posição
+updateCarousel();

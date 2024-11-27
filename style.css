@@ -20,7 +20,8 @@ header h1 {
 
 .carrossel {
     position: relative;
-    max-width: 600px;
+    max-width: 900px;
+    max-height: 200px;
     margin: 20px auto;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
@@ -32,6 +33,10 @@ header h1 {
     object-fit: cover;
 }
 
+.carrossel-container{
+    display: flex;
+    transition: 0.5;
+}
 /* Para alguem quiser mudar alguma coisa no botao de adicionar, fique a vontade*/
 button{
     padding: 10px;
