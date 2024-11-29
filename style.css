@@ -20,11 +20,13 @@ header h1 {
 
 .carrossel {
     position: relative;
-    max-width: 900px;
+    max-width: 600px;
     max-height: 200px;
     margin: 20px auto;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    display: flex;
+    justify-content: center;
 }
 
 .carrossel-slide {
@@ -35,7 +37,12 @@ header h1 {
 
 .carrossel-container{
     display: flex;
-    transition: 0.5;
+    transition: 0.5 ease-in-out;
+}
+
+img{
+    width: 800px;
+    height: 200px;
 }
 /* Para alguem quiser mudar alguma coisa no botao de adicionar, fique a vontade*/
 button{
@@ -108,5 +115,9 @@ input{
     }
     .carrossel{
         width: 90%;
+        max-height: 150px;
+    }
+    .carrossel-slide{
+        height: 150px;
     }
 }
