@@ -1,15 +1,68 @@
 const express = require("express");
+const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
-const port = 5500;
+const port = 3000;
 
-// Middleware
+// Middleware para processar JSON e dados de formulários
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Servir arquivos estáticos da pasta public
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve todas as páginas HTML dentro da pasta 'public/Telas'
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'index.html'));
+});
+
+app.get('/desapegue.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'desapegue.html'));
+});
+
+app.get('/acessorio.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'acessorio.html'));
+});
+
+app.get('/brinquedo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'brinquedo.html'));
+});
+
+app.get('/calcado.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'calcado.html'));
+});
+
+app.get('/contato.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'contato.html'));
+});
+
+app.get('/esporte.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'esporte.html'));
+});
+
+app.get('/feminino.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'feminino.html'));
+});
+
+app.get('/jogo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'jogo.html'));
+});
+
+app.get('/livro.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'livro.html'));
+});
+
+app.get('/masculino.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'masculino.html'));
+});
+
+app.get('/sobre.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Telas', 'sobre.html'));
+});
+
 // Banco de dados
-const db = new sqlite3.Database("./database.db", (err) => {
+const db = new sqlite3.Database("./banco_trab.db", (err) => {
   if (err) {
     console.error("Erro ao conectar ao banco de dados:", err.message);
   } else {
@@ -17,36 +70,34 @@ const db = new sqlite3.Database("./database.db", (err) => {
   }
 });
 
-// Criação da tabela de produtos
-db.run(
-  `CREATE TABLE IF NOT EXISTS produtos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    descricao TEXT,
-    categoria TEXT,
-    localizacao TEXT,
-    valor REAL
-  )`,
-  (err) => {
-    if (err) {
-      console.error("Erro ao criar tabela produtos:", err.message);
-    } else {
-      console.log("Tabela de produtos criada ou já existe.");
-    }
-  }
-);
-
 // Rota para cadastrar um produto
 app.post("/api/produtos", (req, res) => {
-  const { nome, descricao, categoria, localizacao, valor } = req.body;
+  const { nome, email, telefone, data_nasc, produto, descricao, categoria, localizacao, valor } = req.body;
 
-  const query = `INSERT INTO produtos (nome, descricao, categoria, localizacao, valor) VALUES (?, ?, ?, ?, ?)`;
-  db.run(query, [nome, descricao, categoria, localizacao, valor], function (err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
+  try {
+    // Validação dos dados
+    if (!nome || !email || !telefone || !produto || !valor) {
+      return res.status(400).json({ error: "Todos os campos são obrigatórios!" });
     }
-    res.status(201).json({ id: this.lastID, nome, descricao, categoria, localizacao, valor });
-  });
+
+    // Inserir os dados no banco de dados
+    const query = `
+      INSERT INTO produtos (nome, email, telefone, data_nasc, produto, descricao, categoria, localizacao, valor)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const values = [nome, email, telefone, data_nasc, produto, descricao, categoria, localizacao, valor];
+
+    db.run(query, values, function (err) {
+      if (err) {
+        console.error("Erro ao inserir no banco:", err.message);
+        return res.status(500).json({ error: "Erro interno do servidor." });
+      }
+      res.status(200).json({ message: "Produto cadastrado com sucesso!" });
+    });
+  } catch (error) {
+    console.error("Erro ao inserir no banco:", error);
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
 });
 
 // Rota para listar todos os produtos
@@ -113,4 +164,3 @@ app.delete("/api/produtos/:id", (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
-

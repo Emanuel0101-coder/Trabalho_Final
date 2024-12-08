@@ -18,3 +18,9 @@ CREATE TABLE IF NOT EXISTS produtos (
   usuario_id INTEGER NOT NULL,
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id) -- Relacionamento com a tabela 'usuarios'
 );
+
+ALTER TABLE produtos ADD COLUMN email TEXT;
+ALTER TABLE produtos ADD COLUMN telefone TEXT;
+ALTER TABLE produtos ADD COLUMN data_nasc TEXT;
+ALTER TABLE produtos ADD COLUMN produto TEXT;
+
