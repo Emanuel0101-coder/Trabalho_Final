@@ -5,22 +5,18 @@ const sqlite3 = require("sqlite3").verbose();
 const multer = require("multer");
 const fs = require('fs');
 
-// Configuração do multer para armazenar arquivos localmente
-const storage = multer.memoryStorage();  // Usando memória para salvar a imagem em um Buffer
+const storage = multer.memoryStorage();  
 const upload = multer({ storage: storage });
 
 const app = express();
 const port = 3000;
 
 
-// Middleware para processar JSON e dados de formulários
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir arquivos estáticos da pasta public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve todas as páginas HTML dentro da pasta 'public/Telas'
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'Telas', 'index.html'));
 });
@@ -73,12 +69,12 @@ app.get('/editar.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'Telas', 'editar.html'));
 });
 
-// Rota GET para mostrar o formulário
+
 app.get('/form', (req, res) => {
-  res.render('form');  // Renderize o formulário na tela
+  res.render('form');  
 });
 
-// Banco de dados
+
 const db = new sqlite3.Database("./banco_trab.db", (err) => {
   if (err) {
     console.error("Erro ao conectar ao banco de dados:", err.message);
@@ -87,7 +83,6 @@ const db = new sqlite3.Database("./banco_trab.db", (err) => {
   }
 });
 
-// Rota para cadastrar um produto
 app.post("/api/produtos", upload.single("imagem"), async (req, res) => {
   console.log(req.body)
   const {produto, descricao, categoria, localizacao, valor, usuario_id} = req.body;
@@ -95,14 +90,7 @@ app.post("/api/produtos", upload.single("imagem"), async (req, res) => {
 
   console.log(produto)
   try {
-    const usuario_id = Math.floor(Math.random() * 1000); // Apenas um exemplo de geração aleatória
-    // // Validação dos dados
-    // if (!nome || !email || !telefone || !produto || !valor) {
-    //   return res.status(400).json({ error: "Todos os campos são obrigatórios!" });
-    // }
-
-    // Inserir os dados no banco de dados
-    // Gerando um ID aleatório para o usuário, se não for passado
+    const usuario_id = Math.floor(Math.random() * 1000); 
 
     const query = `
       INSERT INTO produtos (nome, descricao, categoria, localizacao, valor, imagem, usuario_id)
@@ -115,7 +103,7 @@ app.post("/api/produtos", upload.single("imagem"), async (req, res) => {
         console.error("Erro ao inserir no banco:", err.message);
         return res.status(500).json({ error: "Erro interno do servidor." });
       }
-      console.log("Produto inserido com ID:", this.lastID); // Log para verificar o ID gerado
+      console.log("Produto inserido com ID:", this.lastID); 
       res.status(200).json({ message: "Produto cadastrado com sucesso!", id: this.lastID });
     });
   } catch (error) {
@@ -124,19 +112,17 @@ app.post("/api/produtos", upload.single("imagem"), async (req, res) => {
   }
 });
 
-// Rota para listar todos os produtos
-app.get('/api/produtos', (req, res) => {
-  db.all('SELECT * FROM produtos', (err, rows) => {
+
+app.get("/api/produtos", (req, res) => {
+  const query = "SELECT * FROM produtos";
+  db.all(query, (err, rows) => {
     if (err) {
-      console.error('Erro ao buscar produtos:', err);
-      return res.status(500).json({ error: 'Erro ao buscar produtos' });
+      return res.status(500).json({ error: err.message });
     }
-    res.status(200).json(rows);  // Retorna todos os produtos
+    res.status(200).json(rows);
   });
 });
 
-
-// Rota para buscar um produto pelo ID
 app.get("/api/produtos/:id", (req, res) => {
   const { id } = req.params;
 
@@ -152,24 +138,20 @@ app.get("/api/produtos/:id", (req, res) => {
   });
 });
 
-// Exemplo de rota para atualizar um produto
 app.put('/api/produtos/:id', upload.single('imagem'), (req, res) => {
   const produtoId = req.params.id;
   const { nome, descricao, categoria, localizacao, valor } = req.body;
-  console.log('Dados recebidos:', req.body);  // Verifique se 'nome' está presente aqui
+  console.log('Dados recebidos:', req.body);  
 
 
-  // Verificação de parâmetros obrigatórios
   if (!nome || !descricao || !categoria || !localizacao || !valor) {
     return res.status(400).json({ error: "Todos os campos são obrigatórios" });
   }
 
-  // Verificação do ID do produto
   if (!produtoId || produtoId === 'null') {
     return res.status(400).json({ error: 'ID do produto inválido' });
   }
 
-  // Verificação de imagem (se o arquivo foi enviado)
   const imagem = req.file ? req.file.buffer : null;  // Se a imagem foi enviada, use o buffer
 
   console.log('Produto recebido:', produtoId);
@@ -184,7 +166,6 @@ app.put('/api/produtos/:id', upload.single('imagem'), (req, res) => {
     imagem,
   });
 
-  // Atualizando a tabela com o nome correto da coluna "nome"
   db.run('UPDATE produtos SET nome = ?, descricao = ?, categoria = ?, localizacao = ?, valor = ? WHERE id = ?',
     [nome, descricao, categoria, localizacao, valor, produtoId],
     function(err) {
@@ -197,16 +178,13 @@ app.put('/api/produtos/:id', upload.single('imagem'), (req, res) => {
     });
   })  
 
-// Rota para excluir um produto pelo ID
 app.delete('/api/produtos/:id', (req, res) => {
   const produtoId = req.params.id;
 
-  // Verifique se o ID do produto foi fornecido
   if (!produtoId || produtoId === 'null') {
     return res.status(400).json({ error: 'ID do produto inválido' });
   }
 
-  // Executando a query de exclusão
   db.run('DELETE FROM produtos WHERE id = ?', [produtoId], function(err) {
     if (err) {
       console.error('Erro ao executar a query de exclusão:', err.message);
@@ -222,7 +200,6 @@ app.delete('/api/produtos/:id', (req, res) => {
 });
 
 
-// Iniciar servidor
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });

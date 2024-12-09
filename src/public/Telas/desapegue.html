@@ -51,6 +51,12 @@
       </div>
     </nav>  
   </div>
+  <div id="produtosCadastrados" class="container mt-4">
+    <h2>Produtos cadastrados</h2>
+    <div id="listaProdutos">
+      
+    </div>
+  </div>
 
   <div id="form">
     <section class="formContainer">
@@ -138,21 +144,18 @@
   </div>
  
   <script>
-    // Evento para tratar o envio dos dados do produto
 document.addEventListener("DOMContentLoaded", () => {
   const btnAdicionar = document.querySelector(".adicionarProd");
 
   btnAdicionar.addEventListener("click", async (e) => {
     e.preventDefault();
 
-    // Captura apenas dos dados necessários
     const produto = document.getElementById("produto").value;
     const descricao = document.getElementById("descricao").value;
     const categoria = document.getElementById("categoria").value;
     const localizacao = document.getElementById("local").value;
     const valor = document.getElementById("valor").value;
-
-    // Objeto apenas com os dados necessários
+    
     const dadosProduto = {
       produto,
       descricao,

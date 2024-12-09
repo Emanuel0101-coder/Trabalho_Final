@@ -1,4 +1,3 @@
--- Criação da tabela 'usuarios'
 CREATE TABLE IF NOT EXISTS usuarios (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nome TEXT NOT NULL,
@@ -6,7 +5,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
   senha TEXT NOT NULL
 );
 
--- Criação da tabela 'produtos'
 CREATE TABLE IF NOT EXISTS produtos (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nome TEXT NOT NULL,
@@ -14,9 +12,9 @@ CREATE TABLE IF NOT EXISTS produtos (
   categoria TEXT NOT NULL,
   localizacao TEXT NOT NULL,
   valor DECIMAL(10, 2) NOT NULL,
-  imagem TEXT, -- Caminho da imagem
+  imagem TEXT, 
   usuario_id INTEGER NOT NULL,
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) -- Relacionamento com a tabela 'usuarios'
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) 
 );
 
 ALTER TABLE produtos ADD COLUMN email TEXT;
