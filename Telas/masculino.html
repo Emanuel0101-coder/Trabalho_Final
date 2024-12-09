@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../Css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <title>DesapegaFácil - Masculino</title>
+</head>
+<body>
+  <div id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="index.html"><img id="logo" src="../imagens/logo.png" alt="Imagem Logo"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="form-inline mx-auto w-50">
+          <input class="form-control flex-grow-1 mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Search">
+          <button class="btn my-2 my-sm-2" type="submit"><img src="../imagens/lupa.png" alt="Imagem Logo"></button>
+        </form>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item mr-3">
+            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item dropdown mr-3">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categorias
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="masculino.html">Masculino</a>
+              <a class="dropdown-item" href="feminino.html">Feminino</a>
+              <a class="dropdown-item" href="calcado.html">Calçados</a>
+              <a class="dropdown-item" href="acessorio.html">Acessórios</a>
+              <a class="dropdown-item" href="brinquedo.html">Brinquedos</a>
+              <a class="dropdown-item" href="esporte.html">Esporte</a>
+              <a class="dropdown-item" href="jogo.html">Jogos</a>
+              <a class="dropdown-item" href="livro.html">Livros</a>
+            </div>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link" href="desapegue.html">Desapegue</a>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link" href="sobre.html">Sobre</a>
+          </li>
+          <li class="nav-item mr-3">
+            <a class="nav-link" href="contato.html">Contato</a>
+          </li>
+        </ul>
+      </div>
+    </nav>  
+  </div>
+  
+  <div id="carousel">
+    <div class="slider">
+      <div class="list">
+          <div class="item">
+              <img class="imgCarousel" src="../imagens/1.png" alt="Rio de Janeiro">
+          </div>
+          <div class="item">
+              <img class="imgCarousel" src="../imagens/2.png" alt="Rio de Janeiro">
+          </div>
+          <div class="item">
+              <img class="imgCarousel" src="../imagens/3.png" alt="Rio de Janeiro">
+          </div>
+      </div>
+      <a class="anterior" onclick="plusSlides(-1)">&#10094;</a>
+      <a class="proximo" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+    <div id="ponto">
+      <span class="ponto" onclick="currentSlide(3)"></span>
+      <span class="ponto" onclick="currentSlide(1)"></span>
+      <span class="ponto" onclick="currentSlide(2)"></span>
+    </div>
+  </div>
+
+  <div class="container-produtos">
+    <h2>Produtos em Destaque:</h2>
+    <div id="produtos">
+      <div class="produto">
+        <img class="fotoProd" src="../imagens/3 (1).png" alt="Imagem Categoria Brinquedo">
+        <div class="infoProd">
+          <h4 class="precoProd">R$35,00</h4>
+          <h4 class="nomeProd">Camiseta Masculina</h4>
+          <span class="descProd">Tamanho GG</span>
+          <span class="endProd">Jaragua</span>
+          <div class="botoes">
+            <a href="editar.html" class="botaoEditar">Editar Produto</a>
+            <a href="" class="botaoExcluir">Excluir Produto</a>
+            <a href="" class="botaoComprar">Comprar Produto</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <footer class="py-3">
+      <div class="row">
+        <div class="col-md-4">
+          <h4>Alunos</h4>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><h5>Emanuel</h5></li>
+            <li class="nav-item mb-2"><h5>Emilly</h5></li>
+            <li class="nav-item mb-2"><h5>Larissa</h5></li>
+            <li class="nav-item mb-2"><h5>Mateus</h5></li>
+            <li class="nav-item mb-2"><h5>Pedro</h5></li>
+            <li class="nav-item mb-2"><h5>Thainara</h5></li>
+          </ul>
+        </div>
+        <div class="col-md-4 text-center">
+          <h4>Linkedin</h4>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/emanuel-almeida-967b87300/"><img src="../imagens/linkedin.png" alt="Imagem Linkedin"></a></li>
+            <li class="nav-item mb-2"><a href="www.linkedin.com/in/emillylaislemke"><img src="../imagens/linkedin.png" alt="Imagem Linkedin"></a></li>
+            <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/larissa-lemes-de-souza-907376217?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><img src="../imagens/linkedin.png" alt="Imagem Linkedin"></a></li>
+            <li class="nav-item mb-2"><a href="www.linkedin.com/in/mateus-tavares-dos-santos"><img src="../imagens/linkedin.png" alt="Imagem Linkedin"></a></li>
+            <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/pedro-paulo-hecht"><img src="../imagens/linkedin.png" alt="Imagem Linkedin"></a></li>
+            <li class="nav-item mb-2"><a href="https://www.linkedin.com/in/thainara-hemkemeier-1aaba633b/"><img src="../imagens/linkedin.png" alt="Imagem Linkedin"></a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 text-right">
+          <h4>Github</h4>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="https://github.com/Emanuel0101-coder"><img src="../imagens/github.png" alt="Imagem Github"></a></li>
+            <li class="nav-item mb-2"><a href="https://github.com/emillyllemke"><img src="../imagens/github.png" alt="Imagem Github"></a></li>
+            <li class="nav-item mb-2"><a href="https://github.com/ntwdtlari"><img src="../imagens/github.png" alt="Imagem Github"></a></li>
+            <li class="nav-item mb-2"><a href="https://github.com/mateustavaressantos"><img src="../imagens/github.png" alt="Imagem Github"></a></li>
+            <li class="nav-item mb-2"><a href="https://github.com/Pepashecht"><img src="../imagens/github.png" alt="Imagem Github"></a></li>
+            <li class="nav-item mb-2"><a href="https://github.com/thaihemkemeier"><img src="../imagens/github.png" alt="Imagem Github"></a></li>
+          </ul>
+        </div>
+      </div>
+  
+      <div class="d-flex flex-column flex-sm-row justify-content-between py-4 border-top">
+        <p>&copy; 2024 Trabalho Final de Desenvolvimento Web</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="../JS/script.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
