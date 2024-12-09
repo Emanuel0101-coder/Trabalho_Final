@@ -125,15 +125,16 @@ app.post("/api/produtos", upload.single("imagem"), async (req, res) => {
 });
 
 // Rota para listar todos os produtos
-app.get("/api/produtos", (req, res) => {
-  const query = "SELECT * FROM produtos";
-  db.all(query, (err, rows) => {
+app.get('/api/produtos', (req, res) => {
+  db.all('SELECT * FROM produtos', (err, rows) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      console.error('Erro ao buscar produtos:', err);
+      return res.status(500).json({ error: 'Erro ao buscar produtos' });
     }
-    res.status(200).json(rows);
+    res.status(200).json(rows);  // Retorna todos os produtos
   });
 });
+
 
 // Rota para buscar um produto pelo ID
 app.get("/api/produtos/:id", (req, res) => {
@@ -152,67 +153,74 @@ app.get("/api/produtos/:id", (req, res) => {
 });
 
 // Exemplo de rota para atualizar um produto
-app.put('/api/produtos/:id', (req, res) => {
+app.put('/api/produtos/:id', upload.single('imagem'), (req, res) => {
   const produtoId = req.params.id;
-  const { nome, descricao, categoria, localizacao, valor, imagem } = req.body;
+  const { nome, descricao, categoria, localizacao, valor } = req.body;
+  console.log('Dados recebidos:', req.body);  // Verifique se 'nome' está presente aqui
 
-  // Validação dos dados
+
+  // Verificação de parâmetros obrigatórios
   if (!nome || !descricao || !categoria || !localizacao || !valor) {
     return res.status(400).json({ error: "Todos os campos são obrigatórios" });
   }
 
-  // Atualizar o produto no banco de dados
-  const query = `UPDATE produtos SET nome = ?, descricao = ?, categoria = ?, localizacao = ?, valor = ?, imagem = ? WHERE id = ?`;
-  
-  // Executar a consulta SQL para atualizar o produto
-  db.run(query, [nome, descricao, categoria, localizacao, valor, imagem, produtoId], function (err) {
-    if (err) {
-      console.error(err.message);
-      return res.status(500).json({ error: 'Erro ao atualizar o produto.' });
-    }
-    
-    // Se tudo ocorrer bem
-    res.status(200).json({ message: 'Produto atualizado com sucesso!' });
+  // Verificação do ID do produto
+  if (!produtoId || produtoId === 'null') {
+    return res.status(400).json({ error: 'ID do produto inválido' });
+  }
+
+  // Verificação de imagem (se o arquivo foi enviado)
+  const imagem = req.file ? req.file.buffer : null;  // Se a imagem foi enviada, use o buffer
+
+  console.log('Produto recebido:', produtoId);
+  console.log('Imagem recebida:', req.file);  // A imagem estará aqui
+  console.log('Dados recebidos:', {
+    produtoId,
+    nome,
+    descricao,
+    categoria,
+    localizacao,
+    valor,
+    imagem,
   });
-});
 
-
-// Rota para atualizar um produto pelo ID
-app.put("/api/produtos/editar", upload.single('imagem'), (req, res) => {
-  const { produto, descricao, categoria, localizacao, valor } = req.body;
-  const imagem = req.file ? req.file.buffer : null;
-
-  const query = `
-    UPDATE produtos
-    SET nome = ?, descricao = ?, categoria = ?, localizacao = ?, valor = ?, imagem = ?
-    WHERE id = ?  -- O id pode ser passado de alguma forma no corpo ou em uma variável do servidor
-  `;
-  db.run(query, [produto, descricao, categoria, localizacao, valor, imagem, id], function(err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    if (this.changes === 0) {
-      return res.status(404).json({ error: "Produto não encontrado." });
-    }
-    res.status(200).json({ message: "Produto editado com sucesso." });
-  });
-});
+  // Atualizando a tabela com o nome correto da coluna "nome"
+  db.run('UPDATE produtos SET nome = ?, descricao = ?, categoria = ?, localizacao = ?, valor = ? WHERE id = ?',
+    [nome, descricao, categoria, localizacao, valor, produtoId],
+    function(err) {
+      if (err) {
+        console.error('Erro ao executar a query:', err.message);
+        res.status(500).json({ error: 'Erro ao atualizar o produto' });
+        return;
+      }
+      res.status(200).json({ message: 'Produto atualizado com sucesso!' });
+    });
+  })  
 
 // Rota para excluir um produto pelo ID
-app.delete("/api/produtos/:id", (req, res) => {
-  const { id } = req.params;
+app.delete('/api/produtos/:id', (req, res) => {
+  const produtoId = req.params.id;
 
-  const query = "DELETE FROM produtos WHERE id = ?";
-  db.run(query, [id], function (err) {
+  // Verifique se o ID do produto foi fornecido
+  if (!produtoId || produtoId === 'null') {
+    return res.status(400).json({ error: 'ID do produto inválido' });
+  }
+
+  // Executando a query de exclusão
+  db.run('DELETE FROM produtos WHERE id = ?', [produtoId], function(err) {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      console.error('Erro ao executar a query de exclusão:', err.message);
+      return res.status(500).json({ error: 'Erro ao excluir o produto' });
     }
+
     if (this.changes === 0) {
-      return res.status(404).json({ error: "Produto não encontrado." });
+      return res.status(404).json({ error: 'Produto não encontrado' });
     }
-    res.status(200).json({ message: "Produto excluído com sucesso.", id });
+
+    return res.status(200).json({ message: 'Produto excluído com sucesso!' });
   });
 });
+
 
 // Iniciar servidor
 app.listen(port, () => {
