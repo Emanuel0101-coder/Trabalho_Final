@@ -66,7 +66,7 @@
       </form>
 
       <h2 class="dados">Dados do Produto</h2>
-      <form id="dadosProduto" class="formGrid">
+      <form id="dadosProduto" class="formGrid" action="/api/produtos" method="POST" enctype="multipart/form-data">
         <input type="text" id="produto" placeholder="Nome do produto" required />
         <textarea id="descricao" placeholder="Descrição do produto" required></textarea>
         <select name="categoria" id="categoria">
@@ -137,7 +137,56 @@
     </footer>
   </div>
  
-  <script src="script.js"></script>
+  <script>
+    // Evento para tratar o envio dos dados do produto
+document.addEventListener("DOMContentLoaded", () => {
+  const btnAdicionar = document.querySelector(".adicionarProd");
+
+  btnAdicionar.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    // Captura apenas dos dados necessários
+    const produto = document.getElementById("produto").value;
+    const descricao = document.getElementById("descricao").value;
+    const categoria = document.getElementById("categoria").value;
+    const localizacao = document.getElementById("local").value;
+    const valor = document.getElementById("valor").value;
+
+    // Objeto apenas com os dados necessários
+    const dadosProduto = {
+      produto,
+      descricao,
+      categoria,
+      localizacao,
+      valor,
+    };
+
+    try {
+      console.log("Enviando dados do produto:", dadosProduto);
+      const response = await fetch("http://localhost:3000/api/produtos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dadosProduto),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert("Produto cadastrado com sucesso!");
+        console.log("Resposta da API:", data);
+      } else {
+        const errorData = await response.json();
+        alert(`Erro: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+      alert("Erro ao cadastrar produto. Verifique o console para mais informações.");
+    }
+  });
+});
+
+  </script>
 </body>
 
 </html>

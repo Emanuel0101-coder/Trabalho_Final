@@ -1,6 +1,12 @@
 const express = require("express");
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
+const multer = require("multer");
+
+// Configuração do multer para armazenar arquivos localmente
+const storage = multer.memoryStorage();  // Usando memória para salvar a imagem em um Buffer
+const upload = multer({ storage: storage });
+
 
 const app = express();
 const port = 3000;
@@ -71,28 +77,35 @@ const db = new sqlite3.Database("./banco_trab.db", (err) => {
 });
 
 // Rota para cadastrar um produto
-app.post("/api/produtos", (req, res) => {
-  const { nome, email, telefone, data_nasc, produto, descricao, categoria, localizacao, valor } = req.body;
+app.post("/api/produtos", upload.single("imagem"), async (req, res) => {
+  console.log(req.body)
+  const {produto, descricao, categoria, localizacao, valor, usuario_id} = req.body;
+  const imagem = req.file? req.file.buffer : null;
 
+  console.log(produto)
   try {
-    // Validação dos dados
-    if (!nome || !email || !telefone || !produto || !valor) {
-      return res.status(400).json({ error: "Todos os campos são obrigatórios!" });
-    }
+    const usuario_id = Math.floor(Math.random() * 1000); // Apenas um exemplo de geração aleatória
+    // // Validação dos dados
+    // if (!nome || !email || !telefone || !produto || !valor) {
+    //   return res.status(400).json({ error: "Todos os campos são obrigatórios!" });
+    // }
 
     // Inserir os dados no banco de dados
-    const query = `
-      INSERT INTO produtos (nome, email, telefone, data_nasc, produto, descricao, categoria, localizacao, valor)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-    const values = [nome, email, telefone, data_nasc, produto, descricao, categoria, localizacao, valor];
+    // Gerando um ID aleatório para o usuário, se não for passado
 
+    const query = `
+      INSERT INTO produtos (nome, descricao, categoria, localizacao, valor, imagem, usuario_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    const values = [produto, descricao, categoria, localizacao, valor,imagem, usuario_id];
+    console.log(values)
     db.run(query, values, function (err) {
       if (err) {
         console.error("Erro ao inserir no banco:", err.message);
         return res.status(500).json({ error: "Erro interno do servidor." });
       }
-      res.status(200).json({ message: "Produto cadastrado com sucesso!" });
+      console.log("Produto inserido com ID:", this.lastID); // Log para verificar o ID gerado
+      res.status(200).json({ message: "Produto cadastrado com sucesso!", id: this.lastID });
     });
   } catch (error) {
     console.error("Erro ao inserir no banco:", error);
