@@ -50,3 +50,31 @@ document.querySelectorAll('.botaoExcluir').forEach(button => {
         alert('O produto foi excluído');
     });
 });
+
+// Seleciona o formulário
+const form = document.getElementById("dadosProduto");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault(); // Evita o comportamento padrão de envio do formulário
+
+  const formData = new FormData(form); // Cria o FormData com todos os dados do formulário
+
+  try {
+    const response = await fetch('/api/produtos', {
+      method: 'POST',
+      body: formData // Envia os dados como FormData
+    });
+
+    const result = await response.json(); // Aguarda e obtém a resposta do servidor
+
+    if (response.ok) {
+      alert('Produto adicionado com sucesso!');
+      form.reset(); // Reseta o formulário após o envio
+    } else {
+      alert('Erro ao adicionar produto: ' + result.message);
+    }
+  } catch (error) {
+    console.error('Erro ao enviar o formulário:', error);
+    alert('Erro ao enviar os dados.');
+  }
+});
